@@ -1,0 +1,21 @@
+# Системная служба
+service:
+  name: 'geodbsvc' # Имя службы
+  display_name: 'GeoDB Service' # Отображаемое имя
+  description: 'GeoDB Service' # Описание
+
+# Веб-сервер
+server:
+  host: '' # Адрес
+  port: 3001 # Порт
+  forwarded_for: false # Проксируется ли запросы на сервер (используется обратный прокси, добавляющий заголовок X-Forwarded-For)?
+  trusted_proxies: ['127.0.0.1'] # Доверенные прокси, которые могут устанавливать заголовок X-Forwarded-For
+
+# Логи
+log:
+  enabled: false
+  file: './logs/geodbsvc.log'
+
+# База данных SQLite 3
+database:
+  dsn: 'file://../GeoDB.sqlite'

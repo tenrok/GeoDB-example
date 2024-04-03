@@ -1,0 +1,1 @@
+UPDATE networks SET region_id=542415, city_id=558066 WHERE ip=1346637568;

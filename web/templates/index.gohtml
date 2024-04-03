@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>GeoDB Service / Демонстрация</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<style>
+			#map-container {
+				position: relative;
+			}
+			#map-title {
+				width: 460px;
+				padding: 5px 10px;
+				background: #fafafa;
+				border: 1px solid #dee2e6;
+				border-top: none;
+				border-radius: 0 0 0.375rem 0.375rem;
+				position: absolute;
+				top: 1px;
+				left: 0;
+  				right: 0;
+				margin: 0 auto;
+				z-index: 1000;
+			}
+			#map {
+				height: 480px;
+				border-radius: 0.375rem;
+				border: 1px solid #dee2e6;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="input-group my-1">
+						<input type="text" id="ip-input" class="form-control" value="{{.ip}}" placeholder="IP" autocomplete="off">
+						<div class="input-group-append">
+							<button type="button" id="lookup-button" class="btn btn-outline-secondary">Определить</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id="map-container">
+						<div id="map" class="my-1"></div>
+						<div id="map-title"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id="alert-placeholder" class="my-1"></div>
+				</div>
+			</div>
+		</div>
+
+		<script src="js/bootstrap.bundle.min.js"></script>
+		<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+		<script>
+			const IP = '{{.ip}}';
+			const Geo = {{.geo}};
+
+			let myMap;
+			let myPlacemark;
+
+			const $ipInput = document.querySelector('#ip-input');
+			const $mapTitle = document.querySelector('#map-title');
+			const $lookupButton = document.querySelector('#lookup-button');
+			const $alertPlaceholder = document.querySelector('#alert-placeholder');
+
+			const showAlert = (message, type) => {
+				const wrapper = document.createElement('div');
+				wrapper.innerHTML = [
+					`<div class="alert alert-${type} alert-dismissible fade show" role="alert">`,
+					`<div>${message}</div>`,
+					`<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`,
+					`</div>`,
+				].join('');
+				$alertPlaceholder.append(wrapper);
+				setTimeout(() => bootstrap.Alert.getOrCreateInstance(wrapper).close(), 5000);
+			};
+
+			const titleHtml = (ip, geo) => {
+				const city = geo.city.names.ru || geo.city.names.en;
+				const region = (geo.subdivisions || []).map(x => x.names.ru || x.names.en).join('<br>');
+				const country = geo.country.names.ru || geo.country.names.en
+				return [
+					`<strong>${ip}</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`,
+					`Координаты: <strong>${geo.location.latitude}, ${geo.location.longitude}</strong><br>`,
+					`Страна: <strong>${country}</strong><br>`,
+					`Регион: <strong>${region}</strong><br>`,
+					`Город: <strong>${city}</strong>`,
+				].join('');
+			};
+
+			ymaps.ready(function () {
+				myMap = new ymaps.Map('map', {
+					center:  [Geo.location.latitude, Geo.location.longitude],
+					zoom: 10,
+					controls: [
+						'zoomControl', // Ползунок масштаба
+						'rulerControl', // Линейка
+						'typeSelector', // Переключатель слоев карты
+						'fullscreenControl', // Полноэкранный режим
+					],
+				});
+				myPlacemark = new ymaps.Placemark(myMap.getCenter(), {}, {preset: 'islands#redDotIcon'});
+				myMap.geoObjects.add(myPlacemark);
+			});
+
+			async function lookup(ip) {
+				const response = await fetch(`/api/v1/lookup?` + new URLSearchParams({ip}));
+				if (response.ok) {
+					const {code, msg, result} = await response.json();
+					if (code === 1) {
+						showAlert(`Ошибка: ${msg}`, 'danger');
+						return;
+					}
+					$mapTitle.innerHTML = titleHtml(ip, result)
+					const coords = [result.location.latitude, result.location.longitude];
+					if (myMap) {
+						myMap.setCenter(coords);
+					}
+					if (myPlacemark) {
+						myPlacemark.geometry.setCoordinates(coords);
+					}
+				} else {
+					showAlert(`Ошибка HTTP: ${response.status}`, 'danger');
+				}
+			}
+
+			$ipInput.addEventListener('keyup', async (event) => {
+				if (event.which == 13) {
+					await lookup($ipInput.value);
+				}
+			});
+
+			$lookupButton.addEventListener('click', async () => {
+				await lookup($ipInput.value);
+			});
+		</script>
+	</body>
+</html>
