@@ -1,6 +1,6 @@
 package api
 
-import "geodbsvc/internal/models"
+import "example/internal/models"
 
 type Controller struct {
 	srv models.Server

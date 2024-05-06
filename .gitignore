@@ -15,4 +15,5 @@
 /logs/*
 !/**/.gitkeep
 *.exe
-/geodbsvc
+*.sqlite
+/example

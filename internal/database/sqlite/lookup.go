@@ -6,7 +6,7 @@ import (
 	"errors"
 	"net"
 
-	"geodbsvc/internal/database"
+	"example/internal/database"
 )
 
 // Lookup

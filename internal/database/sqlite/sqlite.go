@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"geodbsvc/internal/utils"
+	"example/internal/utils"
 )
 
 type SqliteDB struct {

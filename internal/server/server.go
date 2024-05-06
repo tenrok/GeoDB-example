@@ -12,10 +12,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"geodbsvc/internal/controllers/api"
-	"geodbsvc/internal/database"
-	"geodbsvc/internal/embedfs"
-	"geodbsvc/web"
+	"example/internal/controllers/api"
+	"example/internal/database"
+	"example/internal/embedfs"
+	"example/web"
 )
 
 type Server struct {

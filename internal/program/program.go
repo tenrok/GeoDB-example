@@ -7,8 +7,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"geodbsvc/internal/database"
-	"geodbsvc/internal/server"
+	"example/internal/database"
+	"example/internal/server"
 )
 
 type Program struct {

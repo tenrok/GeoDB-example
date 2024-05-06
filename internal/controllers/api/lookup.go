@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 
-	"geodbsvc/internal/response"
+	"example/internal/response"
 )
 
 // Lookup получает информацию об IP

@@ -1,6 +1,6 @@
-# geodb-example
+# GeoDB-example
 
-[![Github licence](https://img.shields.io/github/license/tenrok/geodb-example)](https://raw.githubusercontent.com/tenrok/geodb-example/main/LICENSE)
+[![Github licence](https://img.shields.io/github/license/tenrok/GeoDB-example)](https://raw.githubusercontent.com/tenrok/GeoDB-example/main/LICENSE)
 
 ### Migrate
 

@@ -11,18 +11,18 @@ build: linux
 endif
 
 prepare:
-	cp -n ./configs/dist.geodbsvc.yaml ./configs/geodbsvc.yaml
+	cp -n ./configs/dist.example.yaml ./configs/example.yaml
 
 windows: prepare
 	export GOOS=windows
 	export GOARCH=amd64
 	export CGO_ENABLED=1
-	#go build -o geodbsvc.exe -a -ldflags "-extldflags=-static -w -s" -tags "osusergo,netgo,sqlite_omit_load_extension" -trimpath ./cmd/geodbsvc
-	go build -o geodbsvc.exe -tags "osusergo,netgo,sqlite_omit_load_extension" -trimpath ./cmd/geodbsvc
+	#go build -a -tags "osusergo,netgo,sqlite_omit_load_extension" -trimpath -ldflags '-s -w -extldflags "-static"' -o example.exe ./cmd/example
+	go build -tags "osusergo,netgo,sqlite_omit_load_extension" -trimpath -o example.exe ./cmd/example
 
 linux: prepare
 	export GOOS=linux
 	export GOARCH=amd64
 	export CGO_ENABLED=1
-	#go build -o geodbsvc -a -ldflags "-extldflags=-static -w -s" -tags "osusergo,netgo,sqlite_omit_load_extension" -trimpath ./cmd/geodbsvc
-	go build -o geodbsvc -tags="osusergo,netgo,sqlite_omit_load_extension" -trimpath ./cmd/geodbsvc
+	#go build -a -tags "osusergo,netgo,sqlite_omit_load_extension" -trimpath -ldflags '-s -w -extldflags "-static"' -o example ./cmd/example
+	go build -tags="osusergo,netgo,sqlite_omit_load_extension" -trimpath -o example ./cmd/example

@@ -1,0 +1,27 @@
+# Системная служба
+service:
+  name: "example" # Имя службы
+  display_name: "Example Service" # Отображаемое имя
+  description: "Example Service" # Описание
+
+# Веб-сервер
+server:
+  host: "" # Адрес
+  port: 3001 # Порт
+  forwarded_for: false # Проксируется ли запросы на сервер (используется обратный прокси, добавляющий заголовок X-Forwarded-For)?
+  trusted_proxies: ["127.0.0.1"] # Доверенные прокси, которые могут устанавливать заголовок X-Forwarded-For
+
+# Логи
+log:
+  enabled: false
+  level: "info"
+  path: "./logs/example.log"
+  max_size: 5
+  max_age: 30
+  max_backups: 10
+  local_time: true
+  compress: true
+
+# База данных SQLite 3
+database:
+  dsn: "file://GeoDB.sqlite"
