@@ -41,4 +41,6 @@ type GeoRecord struct {
 
 type DB interface {
 	Lookup(ip string) (*GeoRecord, error)
+	Version() string
+	SetVersion(value string)
 }

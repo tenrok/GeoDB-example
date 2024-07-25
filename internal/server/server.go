@@ -61,7 +61,7 @@ func New(cfg *viper.Viper, db database.DB, logger *logrus.Logger) *Server {
 		if err != nil {
 			geo = &database.GeoRecord{}
 		}
-		ctx.HTML(http.StatusOK, "index.gohtml", gin.H{"ip": ip, "geo": geo})
+		ctx.HTML(http.StatusOK, "index.gohtml", gin.H{"ip": ip, "geo": geo, "version": srv.db.Version()})
 	})
 
 	// Статические файлы
@@ -100,17 +100,17 @@ func (s *Server) Shutdown() {
 	s.httpSrv.Shutdown(ctx)
 }
 
-// GetConfig возвращает указатель на конфиг
-func (s *Server) GetConfig() *viper.Viper {
+// Config возвращает указатель на конфиг
+func (s *Server) Config() *viper.Viper {
 	return s.cfg
 }
 
-// GetDB возвращает указатель на БД
-func (s *Server) GetDB() database.DB {
+// DB возвращает указатель на БД
+func (s *Server) DB() database.DB {
 	return s.db
 }
 
-// GetLogger возвращает указатель на логгер
-func (s *Server) GetLogger() *logrus.Logger {
+// Logger возвращает указатель на логгер
+func (s *Server) Logger() *logrus.Logger {
 	return s.logger
 }

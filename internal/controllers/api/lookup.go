@@ -9,8 +9,8 @@ import (
 
 // Lookup получает информацию об IP
 func (c *Controller) Lookup() gin.HandlerFunc {
-	db := c.srv.GetDB()
-	logger := c.srv.GetLogger()
+	db := c.srv.DB()
+	logger := c.srv.Logger()
 
 	validate := validator.New()
 

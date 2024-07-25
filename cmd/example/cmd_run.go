@@ -45,6 +45,12 @@ func (c *RunCmd) Run(app *AppContext) error {
 		app.logger.Fatalln(err)
 	}
 
+	var ver string
+	if err := db.QueryRow("select version from schema_migrations limit 1").Scan(&ver); err != nil {
+		app.logger.Fatalln(err)
+	}
+	db.SetVersion(ver)
+
 	// Создаём программу
 	prg := program.New(app.config, db, app.logger)
 

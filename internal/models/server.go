@@ -8,7 +8,7 @@ import (
 )
 
 type Server interface {
-	GetConfig() *viper.Viper
-	GetDB() database.DB
-	GetLogger() *logrus.Logger
+	Config() *viper.Viper
+	DB() database.DB
+	Logger() *logrus.Logger
 }

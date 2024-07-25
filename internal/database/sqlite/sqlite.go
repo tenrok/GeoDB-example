@@ -6,12 +6,15 @@ import (
 	"net/url"
 	"path/filepath"
 	"strings"
+	"sync"
 
 	"example/internal/utils"
 )
 
 type SqliteDB struct {
 	*sql.DB
+	version string
+	mu      sync.RWMutex
 }
 
 // Open подключается к существующей БД
@@ -41,6 +44,6 @@ func Open(dsn string) (*SqliteDB, error) {
 		return nil, err
 	}
 
-	d := &SqliteDB{db}
+	d := &SqliteDB{DB: db}
 	return d, nil
 }
