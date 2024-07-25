@@ -65,6 +65,10 @@ func (d *SqliteDB) Lookup(ip string) (*database.GeoRecord, error) {
 	var regionNameEn sql.NullString
 	var regionNameRu sql.NullString
 	var regionTimezone sql.NullString
+	var cityNameEn sql.NullString
+	var cityNameRu sql.NullString
+	var cityLat sql.NullFloat64
+	var cityLon sql.NullFloat64
 
 	if err := stmt.QueryRow(sql.Named("ip", long)).Scan(
 		&res.Continent.Code,     // continent_code
@@ -76,10 +80,10 @@ func (d *SqliteDB) Lookup(ip string) (*database.GeoRecord, error) {
 		&regionCode,             // region_code
 		&regionNameEn,           // region_name_en
 		&regionNameRu,           // region_name_ru
-		&res.City.Names.En,      // city_name_en
-		&res.City.Names.Ru,      // region_name_ru
-		&res.Location.Latitude,  // city_lat
-		&res.Location.Longitude, // city_lon
+		&cityNameEn,             // city_name_en
+		&cityNameRu,             // city_name_ru
+		&cityLat,                // city_lat
+		&cityLon,                // city_lon
 		&regionTimezone,         // region_timezone
 	); err != nil {
 		return nil, err
@@ -95,6 +99,22 @@ func (d *SqliteDB) Lookup(ip string) (*database.GeoRecord, error) {
 
 	if regionNameRu.Valid {
 		subdivision.Names.Ru = regionNameRu.String
+	}
+
+	if cityNameEn.Valid {
+		res.City.Names.En = cityNameEn.String
+	}
+
+	if cityNameRu.Valid {
+		res.City.Names.Ru = cityNameRu.String
+	}
+
+	if cityLat.Valid {
+		res.Location.Latitude = float32(cityLat.Float64)
+	}
+
+	if cityLon.Valid {
+		res.Location.Longitude = float32(cityLon.Float64)
 	}
 
 	if regionTimezone.Valid {
