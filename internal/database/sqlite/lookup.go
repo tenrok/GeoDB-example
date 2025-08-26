@@ -6,7 +6,7 @@ import (
 	"errors"
 	"net"
 
-	"example/internal/database"
+	"geodb-example/internal/database"
 )
 
 // Lookup

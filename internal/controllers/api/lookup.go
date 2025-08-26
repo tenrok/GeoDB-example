@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 
-	"example/internal/response"
+	"geodb-example/internal/response"
 )
 
 // Lookup получает информацию об IP
@@ -19,14 +19,14 @@ func (c *Controller) Lookup() gin.HandlerFunc {
 
 		if err := validate.Var(ip, "required,ip"); err != nil {
 			logger.Errorf("Error: %v", err)
-			response.SendError(ctx, "Переданы неверные параметры")
+			response.SendErrorf(ctx, "Переданы неверные параметры: %v", err)
 			return
 		}
 
 		rec, err := db.Lookup(ip)
 		if err != nil {
 			logger.Errorf("Error: %v", err)
-			response.SendError(ctx, "Возникла ошибка при получении информации")
+			response.SendErrorf(ctx, "Возникла ошибка при получении информации: %v", err)
 			return
 		}
 

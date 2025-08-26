@@ -12,7 +12,7 @@
       "program": "${workspaceFolder}/cmd/example",
       "args": ["run"],
       "cwd": "${workspaceFolder}",
-      "output": "${workspaceFolder}/__example_debug.exe"
+      "output": "${workspaceFolder}/bin/__example_debug.exe"
     }
   ]
 }

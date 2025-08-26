@@ -9,9 +9,9 @@ import (
 	"github.com/kardianos/service"
 	_ "github.com/mattn/go-sqlite3"
 
-	sqlitedb "example/internal/database/sqlite"
-	"example/internal/program"
-	"example/migrations"
+	sqlitedb "geodb-example/internal/database/sqlite"
+	"geodb-example/internal/program"
+	"geodb-example/migrations"
 )
 
 type RunCmd struct {
@@ -52,7 +52,7 @@ func (c *RunCmd) Run(app *AppContext) error {
 	db.SetVersion(ver)
 
 	// Создаём программу
-	prg := program.New(app.config, db, app.logger)
+	prg := program.NewProgram(app.config, db, app.logger)
 
 	// Задаём настройки для службы
 	options := make(service.KeyValue)

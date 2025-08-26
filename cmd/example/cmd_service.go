@@ -6,7 +6,7 @@ import (
 
 	"github.com/kardianos/service"
 
-	"example/internal/utils"
+	"geodb-example/internal/utils"
 )
 
 type ServiceCmd struct {

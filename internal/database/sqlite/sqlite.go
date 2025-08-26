@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"example/internal/utils"
+	"geodb-example/internal/utils"
 )
 
 type SqliteDB struct {

@@ -1,6 +1,6 @@
 package api
 
-import "example/internal/models"
+import "geodb-example/internal/models"
 
 type Controller struct {
 	srv models.Server
@@ -8,7 +8,5 @@ type Controller struct {
 
 // NewController создаёт новый контроллер
 func NewController(srv models.Server) *Controller {
-	ctrl := new(Controller)
-	ctrl.srv = srv
-	return ctrl
+	return &Controller{srv}
 }

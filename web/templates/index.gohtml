@@ -54,7 +54,7 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					<p class="text-center text-muted">Версия GeoDB: {{.version}}</p>
+					<p class="text-center text-muted">Версия GeoDB: <strong>{{.version}}</strong></p>
 				</div>
 			</div>
 			<div class="row">
@@ -123,7 +123,7 @@
 				if (response.ok) {
 					const {code, msg, result} = await response.json();
 					if (code === 1) {
-						showAlert(`Ошибка: ${msg}`, 'danger');
+						showAlert(msg, 'danger');
 						return;
 					}
 					$mapTitle.innerHTML = titleHtml(ip, result)

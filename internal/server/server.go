@@ -12,10 +12,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"example/internal/controllers/api"
-	"example/internal/database"
-	"example/internal/embedfs"
-	"example/web"
+	"geodb-example/internal/controllers/api"
+	"geodb-example/internal/database"
+	"geodb-example/internal/embedfs"
+	"geodb-example/web"
 )
 
 type Server struct {
@@ -26,9 +26,9 @@ type Server struct {
 	apiCtrl *api.Controller
 }
 
-// New
-func New(cfg *viper.Viper, db database.DB, logger *logrus.Logger) *Server {
-	srv := new(Server)
+// NewServer
+func NewServer(cfg *viper.Viper, db database.DB, logger *logrus.Logger) *Server {
+	srv := &Server{}
 	srv.cfg = cfg
 	srv.db = db
 	srv.logger = logger

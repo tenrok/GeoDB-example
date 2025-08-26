@@ -7,8 +7,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"example/internal/database"
-	"example/internal/server"
+	"geodb-example/internal/database"
+	"geodb-example/internal/server"
 )
 
 type Program struct {
@@ -18,12 +18,12 @@ type Program struct {
 	srv    *server.Server
 }
 
-// New
-func New(cfg *viper.Viper, db database.DB, logger *logrus.Logger) *Program {
-	p := new(Program)
+// NewProgram
+func NewProgram(cfg *viper.Viper, db database.DB, logger *logrus.Logger) *Program {
+	p := &Program{}
 	p.cfg = cfg
 	p.logger = logger
-	p.srv = server.New(cfg, db, logger)
+	p.srv = server.NewServer(cfg, db, logger)
 	return p
 }
 

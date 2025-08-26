@@ -4,7 +4,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"example/internal/database"
+	"geodb-example/internal/database"
 )
 
 type Server interface {

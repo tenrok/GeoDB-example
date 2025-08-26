@@ -1,6 +1,7 @@
 package response
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,4 +29,9 @@ func SendSuccess(ctx *gin.Context, msg string, result any) {
 // SendError
 func SendError(ctx *gin.Context, msg string) {
 	ctx.AbortWithStatusJSON(http.StatusOK, Response{Code: CodeError, Msg: msg})
+}
+
+// SendErrorf
+func SendErrorf(ctx *gin.Context, format string, args ...any) {
+	ctx.AbortWithStatusJSON(http.StatusOK, Response{Code: CodeError, Msg: fmt.Sprintf(format, args...)})
 }

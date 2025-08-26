@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -14,7 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"example/internal/rotatehook"
+	"geodb-example/internal/rotatehook"
 )
 
 type AppContext struct {
@@ -44,34 +43,39 @@ func main() {
 	// Определяем директории
 	execPath, err := os.Executable()
 	if err != nil {
-		log.Fatalf("Error: %v", err)
+		logger.Fatalf("Error: %v", err)
 	}
-	execDir, execFile := filepath.Split(execPath)
+	_, execFile := filepath.Split(execPath)
+
+	workingDir, err := os.Getwd()
+	if err != nil {
+		logger.Fatalf("Error: %v", err)
+	}
 
 	// Читаем конфигурационный файл
 	config := viper.New()
 
-	config.SetDefault("service.name", "example")                                                      // Имя службы
-	config.SetDefault("service.display_name", "Example Service")                                      // Отображаемое имя службы
-	config.SetDefault("service.description", "Example Service")                                       // Описание службы
-	config.SetDefault("server.host", "")                                                              // Хост сервера
-	config.SetDefault("server.port", 8080)                                                            // Порт сервера
-	config.SetDefault("server.forwarded_for", false)                                                  // Проксируется ли запросы на сервер (используется обратный прокси, добавляющий заголовок X-Forwarded-For)?
-	config.SetDefault("server.trusted_proxies", []string{"127.0.0.1"})                                // Доверенные прокси, которые могут устанавливать заголовок X-Forwarded-For
-	config.SetDefault("log.enabled", false)                                                           // Вести log-файл?
-	config.SetDefault("log.level", "info")                                                            //
-	config.SetDefault("log.path", filepath.Join(execDir, "logs", "example.log"))                      // Путь до log-файла
-	config.SetDefault("log.max_size", 5)                                                              //
-	config.SetDefault("log.max_age", 30)                                                              //
-	config.SetDefault("log.max_backups", 10)                                                          //
-	config.SetDefault("log.local_time", true)                                                         //
-	config.SetDefault("log.compress", true)                                                           //
-	config.SetDefault("database.dsn", fmt.Sprintf("file:%s", filepath.Join(execDir, "GeoDB.sqlite"))) // Путь до базы данных SQLite
+	config.SetDefault("service.name", "example")                                                         // Имя службы
+	config.SetDefault("service.display_name", "Example Service")                                         // Отображаемое имя службы
+	config.SetDefault("service.description", "Example Service")                                          // Описание службы
+	config.SetDefault("server.host", "")                                                                 // Хост сервера
+	config.SetDefault("server.port", 8080)                                                               // Порт сервера
+	config.SetDefault("server.forwarded_for", false)                                                     // Проксируется ли запросы на сервер (используется обратный прокси, добавляющий заголовок X-Forwarded-For)?
+	config.SetDefault("server.trusted_proxies", []string{"127.0.0.1"})                                   // Доверенные прокси, которые могут устанавливать заголовок X-Forwarded-For
+	config.SetDefault("log.enabled", false)                                                              // Вести log-файл?
+	config.SetDefault("log.level", "info")                                                               //
+	config.SetDefault("log.path", filepath.Join(workingDir, "logs", "example.log"))                      // Путь до log-файла
+	config.SetDefault("log.max_size", 5)                                                                 //
+	config.SetDefault("log.max_age", 30)                                                                 //
+	config.SetDefault("log.max_backups", 10)                                                             //
+	config.SetDefault("log.local_time", true)                                                            //
+	config.SetDefault("log.compress", true)                                                              //
+	config.SetDefault("database.dsn", fmt.Sprintf("file:%s", filepath.Join(workingDir, "GeoDB.sqlite"))) // Путь до базы данных SQLite
 
 	config.SetConfigName("example")
 	config.SetConfigType("yaml")
 
-	config.AddConfigPath(filepath.Join(execDir, "configs"))
+	config.AddConfigPath(filepath.Join(workingDir, "configs"))
 	switch runtime.GOOS {
 	case "linux":
 		config.AddConfigPath("/etc/example")
@@ -80,7 +84,7 @@ func main() {
 	}
 
 	if err := config.ReadInConfig(); err != nil {
-		log.Fatalf("Error: %v", err)
+		logger.Fatalf("Error: %v", err)
 	}
 
 	// Настраиваем логирование
